@@ -12,9 +12,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       if (!input) return setSearchResults(undefined)
-      const response = await fetch(
-        `https://fastapi.ckqlss.workers.dev/api/search?q=${input}`,
-      )
+      const response = await fetch(`/api/search?q=${input}`)
       const data = await response.json()
       setSearchResults(data)
       console.log(data)

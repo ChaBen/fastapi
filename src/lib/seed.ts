@@ -1,10 +1,10 @@
-import { Redis } from '@upstash/redis'
+import { kv } from '@vercel/kv'
 
-const redis = new Redis({
-  url: 'https://apn1-real-flounder-34730.upstash.io',
-  token:
-    'AYeqASQgNmFkNWM3ZTQtNzZjMy00MTdlLTljOTEtZjAxNWFhMTM0NGYyNzVkOWJlNmNjYzU4NDYzYTk4Yzc0YmY3ZGJjM2FkZTE=',
-})
+// const redis = new Redis({
+//   url: 'https://apn1-real-flounder-34730.upstash.io',
+//   token:
+//     'AYeqASQgNmFkNWM3ZTQtNzZjMy00MTdlLTljOTEtZjAxNWFhMTM0NGYyNzVkOWJlNmNjYzU4NDYzYTk4Yzc0YmY3ZGJjM2FkZTE=',
+// })
 
 const countryList = [
   'Afghanistan',
@@ -260,18 +260,17 @@ const countryList = [
 
 countryList.forEach((country) => {
   const term = country.toLowerCase()
-  console.log(term)
 
-  // const terms: { score: 0; member: string }[] = []
+  const terms: { score: 0; member: string }[] = []
 
-  // for (let i = 0; i < term.length; i++) {
-  //   terms.push({ score: 0, member: term.substring(0, i) })
-  // }
-  // terms.push({ score: 0, member: term + '*' })
+  for (let i = 0; i < term.length; i++) {
+    terms.push({ score: 0, member: term.substring(0, i) })
+  }
+  terms.push({ score: 0, member: term + '*' })
 
-  // const populateDB = async () => {
-  //   // @ts-expect-error
-  //   await redis.zadd('terms', ...terms)
-  // }
-  // populateDB()
+  const populateDB = async () => {
+    // @ts-expect-error
+    await kv.zadd('terms', ...terms)
+  }
+  populateDB()
 })
